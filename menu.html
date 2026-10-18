@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasty Bites Restaurant</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+        <h1>🍴 Tasty Bites Restaurant</h1>
+        <p>Delicious Food | Best Taste | Best Price</p>
+    </header>
+    <nav>
+        <a href="home.html">Home</a>
+        <a href="menu.html">Menu</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+<section id="menu">
+        <h2 class="title">Our Food Menu</h2>
+
+           <input type="text" id="search" placeholder="Search food...">
+
+    
+        <div class="categories">
+            <button onclick="filterFood('all')">All</button>
+            <button onclick="filterFood('starter')">Starters</button>
+            <button onclick="filterFood('main')">Main Course</button>
+            <button onclick="filterFood('dessert')">Desserts</button>
+            <button onclick="filterFood('drink')">Drinks</button>
+        </div>
+
+
+        <div class="menu-container">
+
+            <div class="food-card" data-category="starter">
+                <div class="food-image"><img src="images.jpg" width="120px"></div>
+                <h3>Pizza</h3>
+                <p>Cheesy and delicious vegetable pizza.</p>
+                <h4>₹180</h4>
+                <button onclick="addToCart('Pizza', 180)">Add to Cart</button>
+            </div>
+
+            <div class="food-card" data-category="starter">
+                <div class="food-image"><img src="veg.jpg" width="120px"></div>
+                <h3>Veg Manchurian</h3>
+                <p>Crispy vegetable balls with tasty sauce.</p>
+                <h4>₹120</h4>
+                <button onclick="addToCart('Veg Manchurian', 120)">Add to Cart</button>
+            </div>
+
+            <div class="food-card" data-category="main">
+                <div class="food-image"><img src="sb.jpg" width="120px"></div>
+                <h3>Paneer Butter Masala</h3>
+                <p>Paneer cooked in creamy tomato gravy.</p>
+                <h4>₹220</h4>
+                <button onclick="addToCart('Paneer Butter Masala', 220)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food-card" data-category="main">
+                <div class="food-image"><img src="sr.jpg" width="120px"></div>
+                <h3>Veg Biryani</h3>
+                <p>Delicious and aromatic vegetable biryani.</p>
+                <h4>₹180</h4>
+                <button onclick="addToCart('Veg Biryani', 180)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food-card" data-category="dessert">
+                <div class="food-image"><img src="sm.jpg" width="120px"></div>
+                <h3>Ice Cream</h3>
+                <p>Cold and creamy vanilla ice cream.</p>
+                <h4>₹80</h4>
+                <button onclick="addToCart('Ice Cream', 80)">Add to Cart</button>
+            </div>
+
+            <div class="food-card" data-category="dessert">
+                <div class="food-image"><img src="sd.jpg" width="120px"></div>
+                <h3>Chocolate Cake</h3>
+                <p>Soft and delicious chocolate cake.</p>
+                <h4>₹120</h4>
+                <button onclick="addToCart('Chocolate Cake', 120)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food-card" data-category="drink">
+                <div class="food-image"><img src="cc.jpg" width="120px"></div>
+                <h3>Cold Coffee</h3>
+                <p>Refreshing chilled coffee.</p>
+                <h4>₹100</h4>
+                <button onclick="addToCart('Cold Coffee', 100)">
+                    Add to Cart
+                </button>
+            </div>
+
+            <div class="food-card" data-category="drink">
+                <div class="food-image"><img src="kk.jpg" width="120px"></div>
+                <h3>Fresh Lime Soda</h3>
+                <p>Fresh and refreshing lime drink.</p>
+                <h4>₹60</h4>
+                <button onclick="addToCart('Fresh Lime Soda', 60)">
+                    Add to Cart
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <section class="cart">
+        <h2><img src="ddd.jpg" width="50px"> Your Cart</h2>
+
+        <ul id="cartItems"></ul>
+
+        <h3>Total: ₹<span id="total">0</span></h3>
+
+        <button class="order-btn" onclick="placeOrder()">
+            Place Order
+        </button>
+
+        <button class="clear-btn" onclick="clearCart()">
+            Clear Cart
+        </button>
+    </section>
+<script>
+
+let cart = [];
+let total = 0;
+
+
+function addToCart(foodName, price) {
+    cart.push({
+        name: foodName,
+        price: price
+    });
+
+    total = total + price;
+    displayCart();
+    alert(foodName + " added to cart!");
+}
+
+
+function displayCart() {
+    let cartItems = document.getElementById("cartItems");
+    cartItems.innerHTML = "";
+
+    cart.forEach(function(item, index) {
+        let li = document.createElement("li");
+        li.innerHTML =
+            item.name + " - ₹" + item.price +
+            " <button onclick='removeItem(" + index + ")'>Remove</button>";
+
+        cartItems.appendChild(li);
+    });
+
+    document.getElementById("total").innerText = total;
+}
+
+
+function removeItem(index) {
+    total = total - cart[index].price;
+    cart.splice(index, 1);
+    displayCart();
+}
+
+
+function clearCart() {
+    cart = [];
+    total = 0;
+    displayCart();
+}
+
+
+function placeOrder() {
+    if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+    }
+
+    alert(
+        "Order placed successfully! 🎉\n" +
+        "Total Amount: ₹" + total
+    );
+
+    cart = [];
+    total = 0;
+    displayCart();
+}
+
+
+function filterFood(category) {
+    let foods = document.querySelectorAll(".food-card");
+
+    foods.forEach(function(food) {
+        if (category === "all" || food.dataset.category === category) {
+            food.style.display = "block";
+        } else {
+            food.style.display = "none";
+        }
+    });
+}
+
+
+document.getElementById("search").addEventListener("input", function() {
+    let searchText = this.value.toLowerCase();
+    let foods = document.querySelectorAll(".food-card");
+
+    foods.forEach(function(food) {
+        let foodName = food.querySelector("h3").innerText.toLowerCase();
+
+        if (foodName.includes(searchText)) {
+            food.style.display = "block";
+        } else {
+            food.style.display = "none";
+        }
+    });
+});
+</script>
+</body>
+</html>
